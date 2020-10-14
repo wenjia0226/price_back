@@ -1,0 +1,21 @@
+.el-table__expand-column .cell {
+  .el-table__expand-icon--expanded {
+   /* // 这是点击后的旋转角度 */
+    transform: rotate(0deg);
+  }
+.el-table__expand-icon {
+    .el-icon-arrow-right:before {
+     /* //这是收起图标 */
+      content: "\e723";
+      font-size: 14px;
+    }
+  }
+
+ .el-table__expand-icon--expanded {
+    .el-icon-arrow-right:before {
+     /* // 这是展开图标 */
+      content: "\e722";
+      font-size: 14px;
+    }
+  }
+}
