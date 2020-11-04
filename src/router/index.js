@@ -6,6 +6,7 @@ import Login from '@/components/login'
 import labelsetting from '@/components/price/labelsetting.vue'
 import seriessetting from '@/components/price/seriessetting.vue'
 import glassessetting from '@/components/price/glassessetting.vue'
+import classsetting from '@/components/price/classsetting.vue'
 import user from '@/components/user.vue'
 Vue.use(Router)
 
@@ -20,6 +21,7 @@ export default new Router({
 		{path: '/labelsetting', component: labelsetting},
 		{path: '/seriessetting', component: seriessetting},
 		{path: '/glassessetting', component: glassessetting},
+		{path: '/classsetting', component: classsetting},
 		{path: '/user', component: user}
 	 ],
 	}

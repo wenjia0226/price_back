@@ -115,7 +115,6 @@
       },
       methods: {
 		  getType(val) {
-			  console.log(val)
 			  this.addForm.type = val;
 		  },
         handleSeriousChange(val) {

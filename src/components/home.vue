@@ -28,6 +28,10 @@
 		        <i class="el-icon-star-on"></i>
 		       <span slot="title">产品设置</span>
 		     </el-menu-item>
+				 <el-menu-item index="/classsetting">
+				    <i class="el-icon-star-on"></i>
+				   <span slot="title">类别设置</span>
+				 </el-menu-item>
 		   </el-menu-item-group>
 		 </el-submenu>
 		 <el-menu-item index="/user">
