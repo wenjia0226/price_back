@@ -48,6 +48,9 @@
 				<el-table-column label="光度范围1" prop="photometric1"></el-table-column>
 				<el-table-column label="光度范围2" prop="photometric2"></el-table-column>
 				<el-table-column label="光度范围3" prop="photometric3"></el-table-column>
+				<el-table-column label="球镜" prop="sphericalMirror"></el-table-column>
+				<el-table-column label="柱镜" prop="colonoscope"></el-table-column>
+				<el-table-column label="现片" prop="onTheSpot"></el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<el-button type="primary" size="middle" icon="el-icon-edit" @click="editById(scope.row.id)"></el-button>
@@ -114,6 +117,15 @@
 					<el-form-item label="光度范围3">
 						<el-input v-model="addClassForm.photometric3"></el-input>
 					</el-form-item>
+					<el-form-item label="球镜">
+						<el-input v-model="addClassForm.sphericalMirror"></el-input>
+					</el-form-item>
+					<el-form-item label="柱镜">
+						<el-input v-model="addClassForm.colonoscope"></el-input>
+					</el-form-item>
+					<el-form-item label="现片">
+						<el-input v-model="addClassForm.onTheSpot"></el-input>
+					</el-form-item>
 				</el-form>
 				<span slot="footer" class="dialog-footer">
 					<el-button @click="addDialogVisible = false">取 消</el-button>
@@ -171,6 +183,15 @@
 					<el-form-item label="光度范围3">
 						<el-input v-model="editClassForm.photometric3"></el-input>
 					</el-form-item>
+					<el-form-item label="球镜">
+						<el-input v-model="editClassForm.sphericalMirror"></el-input>
+					</el-form-item>
+					<el-form-item label="柱镜">
+						<el-input v-model="editClassForm.colonoscope"></el-input>
+					</el-form-item>
+					<el-form-item label="现片">
+						<el-input v-model="editClassForm.onTheSpot"></el-input>
+					</el-form-item>
 				</el-form>
 				<span slot="footer" class="dialog-footer">
 					<el-button @click="editDialogVisible = false">取 消</el-button>
@@ -225,7 +246,10 @@
 					photometric1:"",
 					photometric2:"",
 					photometric3:"",
-					benchmark: ''
+					benchmark: '',
+					sphericalMirror: '',
+					colonoscope: '',
+					onTheSpot: ''
 				},
 				addRules: {
 					benchmark: [{
@@ -307,7 +331,10 @@
 					photometric1:"",
 					photometric2:"",
 					photometric3:"",
-					benchmark: ''
+					benchmark: '',
+					sphericalMirror: '',
+					colonoscope: '',
+					onTheSpot: ''
 				},
 				editRules: {
 					benchmark: [{
@@ -401,7 +428,6 @@
 						this.searchResult = false;
 					}
 					if (res.data.status == 200) {
-
 						res ? res = res.data.data : '';
 						this.productSeriesList = res.content;
 						this.totalElements = res.totalElements;
@@ -459,6 +485,9 @@
 						param.append('photometric2', this.editClassForm.photometric2);
 						param.append('photometric3', this.editClassForm.photometric3);
 						param.append('benchmark', this.editClassForm.benchmark);
+						param.append('sphericalMirror', this.editClassForm.sphericalMirror);
+						param.append('colonoscope', this.editClassForm.colonoscope);
+						param.append('onTheSpot', this.editClassForm.onTheSpot);
 						axios({
 								method: 'post',
 								url: '/lightspace/saveGlasses',
@@ -549,6 +578,9 @@
 						param.append('photometric2', this.addClassForm.photometric2);
 						param.append('photometric3', this.addClassForm.photometric3);
 						param.append('benchmark', this.addClassForm.benchmark);
+						param.append('sphericalMirror', this.addClassForm.sphericalMirror);
+						param.append('colonoscope', this.addClassForm.colonoscope);
+						param.append('onTheSpot', this.addClassForm.onTheSpot);
 						axios({
 								method: 'post',
 								url: '/lightspace/addGlasses',
