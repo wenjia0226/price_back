@@ -63,7 +63,7 @@ export default {
                 if(!valid) return this.$message.error('请输入正确的账号密码');
                 //如果验证成功，发起登录请求
                let param = new URLSearchParams();
-               param.append('loginname', this.loginForm.loginname);
+               param.append('loginName', this.loginForm.loginname);
                param.append('password', this.loginForm.password);
                 axios({
                     method: 'post',
@@ -74,12 +74,13 @@ export default {
             })
         },
         handleLoginSucc(res) {
-         if(res.status !== 200) return this.$message.error('登录失败');
+         if(res.data.status !== 200) return this.$message.error('登录失败');
             //将token 存到sessionStorage
-            console.log(res)
-          
-            this.$message.success('登录成功');
-		    this.$router.push('/home')
+          if(res.data.status ==200) {
+						this.$message.success('登录成功');
+						this.$router.push('/home')
+					}
+           
        
 
         },

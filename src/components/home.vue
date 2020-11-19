@@ -9,7 +9,7 @@
          active-text-color="#409eff"
          router
          :unique-opened="true"
-         :collapse-transition="false" >
+         :collapse-transition="false">
 		 <el-submenu index="/nocheck">
 		   <template slot="title">
 		     <i class="el-icon-s-custom"></i>

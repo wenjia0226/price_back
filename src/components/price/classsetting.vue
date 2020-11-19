@@ -42,15 +42,17 @@
 				<el-table-column label="膜层" prop="film"></el-table-column>
 				<el-table-column label="隐形标记" prop="covert"></el-table-column>
 				<el-table-column label="下加光" prop="addLightBelow"></el-table-column>
-				<el-table-column label="现片价" prop="presentPrice	"></el-table-column>
+				<el-table-column label="现片价" prop="presentPrice"></el-table-column>
 				<el-table-column label="定制价" prop="customPrice"></el-table-column>
 				<el-table-column label="基准线" prop="benchmark"></el-table-column>
 				<el-table-column label="光度范围1" prop="photometric1"></el-table-column>
 				<el-table-column label="光度范围2" prop="photometric2"></el-table-column>
 				<el-table-column label="光度范围3" prop="photometric3"></el-table-column>
-				<el-table-column label="球镜" prop="sphericalMirror"></el-table-column>
+				<el-table-column label="光度范围4" prop="photometric4"></el-table-column>
+				<el-table-column label="光度范围5" prop="photometric5"></el-table-column>
+				<!-- <el-table-column label="球镜" prop="sphericalMirror"></el-table-column>
 				<el-table-column label="柱镜" prop="colonoscope"></el-table-column>
-				<el-table-column label="现片" prop="onTheSpot"></el-table-column>
+				<el-table-column label="现片" prop="onTheSpot"></el-table-column> -->
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<el-button type="primary" size="middle" icon="el-icon-edit" @click="editById(scope.row.id)"></el-button>
@@ -90,10 +92,10 @@
 					<el-form-item label="阿贝数" prop="abbe">
 						<el-input v-model="addClassForm.abbe"></el-input>
 					</el-form-item>
-					<el-form-item label="膜层" prop="film">
+					<el-form-item label="膜层" >
 						<el-input v-model="addClassForm.film"></el-input>
 					</el-form-item>
-					<el-form-item label="隐形标记" prop="covert">
+					<el-form-item label="隐形标记" >
 						<el-input v-model="addClassForm.covert"></el-input>
 					</el-form-item>
 					<el-form-item label="下加光">
@@ -102,20 +104,56 @@
 					<el-form-item label="现片价">
 						<el-input v-model="addClassForm.presentPrice"></el-input>
 					</el-form-item>
-					<el-form-item label="定制价" prop="customPrice">
+					<el-form-item label="定制价" >
 						<el-input v-model="addClassForm.customPrice"></el-input>
 					</el-form-item>
-					<el-form-item label="基准线" prop="benchmark">
+					<el-form-item label="基准线" >
 						<el-input v-model="addClassForm.benchmark"></el-input>
 					</el-form-item>
-					<el-form-item label="光度范围1" prop="photometric1">
+					<el-form-item label="光度范围1" >
 						<el-input v-model="addClassForm.photometric1"></el-input>
+					</el-form-item>
+					<el-form-item label="形状一" >
+						<el-radio v-model="addClassForm.shape1" label="1">矩形</el-radio>
+						<el-radio v-model="addClassForm.shape1" label="2">三角形</el-radio>
+						<el-radio v-model="addClassForm.shape1" label="3">上梯形</el-radio>
+						<el-radio v-model="addClassForm.shape1" label="4">下梯形</el-radio>
 					</el-form-item>
 					<el-form-item label="光度范围2">
 						<el-input v-model="addClassForm.photometric2"></el-input>
 					</el-form-item>
+					<el-form-item label="形状二" >
+						<el-radio v-model="addClassForm.shape2" label="1">矩形</el-radio>
+						<el-radio v-model="addClassForm.shape2" label="2">三角形</el-radio>
+						<el-radio v-model="addClassForm.shape2" label="3">上梯形</el-radio>
+						<el-radio v-model="addClassForm.shape2" label="4">下梯形</el-radio>
+					</el-form-item>
 					<el-form-item label="光度范围3">
 						<el-input v-model="addClassForm.photometric3"></el-input>
+					</el-form-item>
+					<el-form-item label="形状三" >
+						<el-radio v-model="addClassForm.shape3" label="1">矩形</el-radio>
+						<el-radio v-model="addClassForm.shape3" label="2">三角形</el-radio>
+						<el-radio v-model="addClassForm.shape3" label="3">上梯形</el-radio>
+						<el-radio v-model="addClassForm.shape3" label="4">下梯形</el-radio>
+					</el-form-item>
+					<el-form-item label="光度范围4">
+						<el-input v-model="addClassForm.photometric4"></el-input>
+					</el-form-item>
+					<el-form-item label="形状四" >
+						<el-radio v-model="addClassForm.shape4" label="1">矩形</el-radio>
+						<el-radio v-model="addClassForm.shape4" label="2">三角形</el-radio>
+						<el-radio v-model="addClassForm.shape4" label="3">上梯形</el-radio>
+						<el-radio v-model="addClassForm.shape4" label="4">下梯形</el-radio>
+					</el-form-item>
+					<el-form-item label="光度范围5">
+						<el-input v-model="addClassForm.photometric5"></el-input>
+					</el-form-item>
+					<el-form-item label="形状五" >
+						<el-radio v-model="addClassForm.shape5" label="1">矩形</el-radio>
+						<el-radio v-model="addClassForm.shape5" label="2">三角形</el-radio>
+						<el-radio v-model="addClassForm.shape5" label="3">上梯形</el-radio>
+						<el-radio v-model="addClassForm.shape5" label="4">下梯形</el-radio>
 					</el-form-item>
 					<el-form-item label="球镜">
 						<el-input v-model="addClassForm.sphericalMirror"></el-input>
@@ -156,10 +194,10 @@
 					<el-form-item label="阿贝数" prop="abbe">
 						<el-input v-model="editClassForm.abbe"></el-input>
 					</el-form-item>
-					<el-form-item label="膜层" prop="film">
+					<el-form-item label="膜层" >
 						<el-input v-model="editClassForm.film"></el-input>
 					</el-form-item>
-					<el-form-item label="隐形标记" prop="covert">
+					<el-form-item label="隐形标记" >
 						<el-input v-model="editClassForm.covert"></el-input>
 					</el-form-item>
 					<el-form-item label="下加光" >
@@ -168,20 +206,64 @@
 					<el-form-item label="现片价">
 						<el-input v-model="editClassForm.presentPrice"></el-input>
 					</el-form-item>
-					<el-form-item label="定制价" prop="customPrice">
+					<el-form-item label="定制价" >
 						<el-input v-model="editClassForm.customPrice"></el-input>
 					</el-form-item>
-					<el-form-item label="基准线" prop="benchmark">
+					<el-form-item label="基准线" >
 						<el-input v-model="editClassForm.benchmark"></el-input>
 					</el-form-item>
-					<el-form-item label="光度范围1" prop="photometric1">
+					<el-form-item label="光度范围1">
 						<el-input v-model="editClassForm.photometric1"></el-input>
+					</el-form-item>
+					<el-form-item label="形状一" >
+						<el-radio-group v-model="editClassForm.shape1">
+							<el-radio :label="1">矩形</el-radio>
+							<el-radio :label="2">三角形</el-radio>
+							<el-radio :label="3">上梯形</el-radio>
+							<el-radio :label="4">下梯形</el-radio>
+						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="光度范围2">
 						<el-input v-model="editClassForm.photometric2"></el-input>
 					</el-form-item>
+					<el-form-item label="形状二" >
+						<el-radio-group v-model="editClassForm.shape2" >
+							<el-radio :label="1">矩形</el-radio>
+							<el-radio :label="2">三角形</el-radio>
+							<el-radio :label="3">上梯形</el-radio>
+							<el-radio :label="4">下梯形</el-radio>
+						</el-radio-group>
+					</el-form-item>
 					<el-form-item label="光度范围3">
 						<el-input v-model="editClassForm.photometric3"></el-input>
+					</el-form-item>
+					<el-form-item label="形状三" >
+						<el-radio-group v-model="editClassForm.shape3" >
+							<el-radio :label="1">矩形</el-radio>
+							<el-radio :label="2">三角形</el-radio>
+							<el-radio :label="3">上梯形</el-radio>
+							<el-radio :label="4">下梯形</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item label="光度范围4">
+						<el-input v-model="editClassForm.photometric4"></el-input>
+					</el-form-item>
+					<el-form-item label="形状四" >
+						<el-radio-group v-model="editClassForm.shape4" >
+							<el-radio :label="1">矩形</el-radio>
+							<el-radio :label="2">三角形</el-radio>
+							<el-radio :label="3">上梯形</el-radio>
+							<el-radio :label="4">下梯形</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item label="光度范围5">
+						<el-input v-model="editClassForm.photometric4"></el-input>
+					</el-form-item>
+					<el-form-item label="形状五" >
+						<el-radio v-model="editClassForm.shape5" label="1">矩形</el-radio>
+						<el-radio v-model="editClassForm.shape5" label="2">三角形</el-radio>
+						<el-radio v-model="editClassForm.shape5" label="3">上梯形</el-radio>
+						<el-radio v-model="editClassForm.shape5" label="4">下梯形</el-radio>
 					</el-form-item>
 					<el-form-item label="球镜">
 						<el-input v-model="editClassForm.sphericalMirror"></el-input>
@@ -232,6 +314,7 @@
 				options: '',
 				addDialogVisible: false, //控制对话框的显示隐藏
 				file: '',
+				page: 1,
 				seriesOptions: [],
 				addClassForm: {
 					seriesId: '',
@@ -246,6 +329,13 @@
 					photometric1:"",
 					photometric2:"",
 					photometric3:"",
+					photometric4:"",
+					photometric5:"",
+					shape1: '1',
+					shape2: '1',
+					shape3: '1',
+					shape4: '1',
+					shape5: '1',
 					benchmark: '',
 					sphericalMirror: '',
 					colonoscope: '',
@@ -331,6 +421,13 @@
 					photometric1:"",
 					photometric2:"",
 					photometric3:"",
+					photometric4:"",
+					photometric5:"",
+					shape1: 1,
+					shape2: 1,
+					shape3: 1,
+					shape4: 1,
+					shape5: 1,
 					benchmark: '',
 					sphericalMirror: '',
 					colonoscope: '',
@@ -440,6 +537,7 @@
 			},
 			handleCurrentChange(val) {
 				this.page = val;
+				this.getproductSeriesList();
 			},
 			editById(id) {
 				this.editDialogVisible = true;
@@ -484,6 +582,13 @@
 						param.append('photometric1', this.editClassForm.photometric1);
 						param.append('photometric2', this.editClassForm.photometric2);
 						param.append('photometric3', this.editClassForm.photometric3);
+						param.append('photometric4', this.editClassForm.photometric4);
+						param.append('photometric5', this.editClassForm.photometric5);
+						param.append('shape1', this.editClassForm.shape1);
+						param.append('shape2', this.editClassForm.shape2);
+						param.append('shape3', this.editClassForm.shape3);
+						param.append('shape4', this.editClassForm.shape4);
+						param.append('shape5', this.editClassForm.shape5);
 						param.append('benchmark', this.editClassForm.benchmark);
 						param.append('sphericalMirror', this.editClassForm.sphericalMirror);
 						param.append('colonoscope', this.editClassForm.colonoscope);
@@ -577,6 +682,13 @@
 						param.append('photometric1', this.addClassForm.photometric1);
 						param.append('photometric2', this.addClassForm.photometric2);
 						param.append('photometric3', this.addClassForm.photometric3);
+						param.append('photometric4', this.addClassForm.photometric4);
+						param.append('photometric5', this.addClassForm.photometric5);
+						param.append('shape1', this.addClassForm.shape1);
+						param.append('shape2', this.addClassForm.shape2);
+						param.append('shape3', this.addClassForm.shape3);
+						param.append('shape4', this.addClassForm.shape4);
+						param.append('shape5', this.addClassForm.shape5);
 						param.append('benchmark', this.addClassForm.benchmark);
 						param.append('sphericalMirror', this.addClassForm.sphericalMirror);
 						param.append('colonoscope', this.addClassForm.colonoscope);
@@ -623,6 +735,7 @@
 			},
 			getproductSeriesList() {
 				let param = new URLSearchParams();
+				param.append('page', this.page);
 				axios({
 					method: 'post',
 					data: param,
