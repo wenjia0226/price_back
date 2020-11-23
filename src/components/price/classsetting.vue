@@ -257,7 +257,7 @@
 						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="光度范围5">
-						<el-input v-model="editClassForm.photometric4"></el-input>
+						<el-input v-model="editClassForm.photometric5"></el-input>
 					</el-form-item>
 					<el-form-item label="形状五" >
 						<el-radio v-model="editClassForm.shape5" label="1">矩形</el-radio>
