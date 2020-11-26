@@ -13,7 +13,7 @@ module.exports = {
 	proxyTable: {
 	 '/lightspace': {
 	   //target: 'http://47.104.222.22:8080/',
-	   target: 'https://www.guangliangkongjian.com',
+	    target: 'https://www.guangliangkongjian.com',
 		 //target: 'http://192.168.100.199:8080/',
 	   changeOrigin: true,  //允许跨域
 	 }

@@ -9,7 +9,7 @@
 		<el-card style="margin: 20px 0">
 			<el-row :gutter="20">
 				<el-col :span="2">
-					<div class="name">标签选择</div>
+					<div class="name">标签选择</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        v>
 				</el-col>
 				<el-col :span="4">
 					<el-select v-model="searchLabel" clearable placeholder="请选择" @change="handleLabelChange">
@@ -50,6 +50,10 @@
 				<el-table-column label="光度范围3" prop="photometric3"></el-table-column>
 				<el-table-column label="光度范围4" prop="photometric4"></el-table-column>
 				<el-table-column label="光度范围5" prop="photometric5"></el-table-column>
+<!-- 				<el-table-column label="偏光价" prop="polarizing"></el-table-column>
+				<el-table-column label="通道" prop="passageway"></el-table-column>
+				<el-table-column label="偏光定制价" prop="pricepol"></el-table-column>
+				<el-table-column label="蓝光片价" prop="bluray"></el-table-column> -->
 				<!-- <el-table-column label="球镜" prop="sphericalMirror"></el-table-column>
 				<el-table-column label="柱镜" prop="colonoscope"></el-table-column>
 				<el-table-column label="现片" prop="onTheSpot"></el-table-column> -->
@@ -164,6 +168,18 @@
 					<el-form-item label="现片">
 						<el-input v-model="addClassForm.onTheSpot"></el-input>
 					</el-form-item>
+					<el-form-item label="偏光价">
+						<el-input v-model="addClassForm.polarizing"></el-input>
+					</el-form-item>
+					<el-form-item label="通道">
+						<el-input v-model="addClassForm.passageway"></el-input>
+					</el-form-item>
+					<el-form-item label="偏光定制价">
+						<el-input v-model="addClassForm.pricepol"></el-input>
+					</el-form-item>
+					<el-form-item label="蓝光片价">
+						<el-input v-model="addClassForm.bluray"></el-input>
+					</el-form-item>
 				</el-form>
 				<span slot="footer" class="dialog-footer">
 					<el-button @click="addDialogVisible = false">取 消</el-button>
@@ -274,6 +290,18 @@
 					<el-form-item label="现片">
 						<el-input v-model="editClassForm.onTheSpot"></el-input>
 					</el-form-item>
+					<el-form-item label="偏光价">
+						<el-input v-model="editClassForm.polarizing"></el-input>
+					</el-form-item>
+					<el-form-item label="通道">
+						<el-input v-model="editClassForm.passageway"></el-input>
+					</el-form-item>
+					<el-form-item label="偏光定制价">
+						<el-input v-model="editClassForm.pricepol"></el-input>
+					</el-form-item>
+					<el-form-item label="蓝光片价">
+						<el-input v-model="editClassForm.bluray"></el-input>
+					</el-form-item>
 				</el-form>
 				<span slot="footer" class="dialog-footer">
 					<el-button @click="editDialogVisible = false">取 消</el-button>
@@ -339,7 +367,11 @@
 					benchmark: '',
 					sphericalMirror: '',
 					colonoscope: '',
-					onTheSpot: ''
+					onTheSpot: '',
+					polarizing: '',
+					passageway: '',
+					pricepol: '',
+					bluray: ''
 				},
 				addRules: {
 					benchmark: [{
@@ -431,7 +463,11 @@
 					benchmark: '',
 					sphericalMirror: '',
 					colonoscope: '',
-					onTheSpot: ''
+					onTheSpot: '',
+					polarizing: '',
+					passageway: '',
+					pricepol: '',
+					bluray: ''
 				},
 				editRules: {
 					benchmark: [{
@@ -553,6 +589,7 @@
 				})
 			},
 			handleEditById(res) {
+				console.log(res.data.data)
 				if (res.data.data) {
 					this.editClassForm = res.data.data;
 					this.editSeriesId = res.data.data.seriesId;
@@ -593,6 +630,10 @@
 						param.append('sphericalMirror', this.editClassForm.sphericalMirror);
 						param.append('colonoscope', this.editClassForm.colonoscope);
 						param.append('onTheSpot', this.editClassForm.onTheSpot);
+						param.append('polarizing', this.editClassForm.polarizing);
+						param.append('passageway', this.editClassForm.passageway);
+						param.append('pricepol', this.editClassForm.pricepol);
+						param.append('bluray', this.editClassForm.bluray);
 						axios({
 								method: 'post',
 								url: '/lightspace/saveGlasses',
@@ -693,6 +734,10 @@
 						param.append('sphericalMirror', this.addClassForm.sphericalMirror);
 						param.append('colonoscope', this.addClassForm.colonoscope);
 						param.append('onTheSpot', this.addClassForm.onTheSpot);
+						param.append('polarizing', this.addClassForm.polarizing);
+						param.append('passageway', this.addClassForm.passageway);
+						param.append('pricepol', this.addClassForm.pricepol);
+						param.append('bluray', this.addClassForm.bluray);
 						axios({
 								method: 'post',
 								url: '/lightspace/addGlasses',
