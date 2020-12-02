@@ -23,11 +23,16 @@
          </template>
       </el-table-column>
       <el-table-column label="备注" prop="details"></el-table-column>
+			<el-table-column label="操作">
+				<template slot-scope="scope">
+					<el-button type="primary"  size="middle" icon="el-icon-edit" @click ="edit(scope.row.id)" ></el-button>
+				</template>
+			</el-table-column>
       <el-table-column label="操作">
-          <template slot-scope="scope">
-             <el-button type="danger"  size="middle" icon="el-icon-delete" @click ="removeById(scope.row.id)" ></el-button>
-          </template>
-      </el-table-column>
+				<template slot-scope="scope">
+					 <el-button type="danger"  size="middle" icon="el-icon-delete" @click ="removeById(scope.row.id)" ></el-button>
+				</template>
+			</el-table-column>
       </el-table>
       <!-- 添加对话框 -->
       <el-dialog title="添加系列" :visible.sync="addDialogVisible" width="50%" :before-close="handleClose">
@@ -64,6 +69,41 @@
               <el-button type="primary" @click="submitCoparation">确 定</el-button>
           </span>
       </el-dialog>
+			<!-- //修改系列 -->
+			<el-dialog title="修改系列" :visible.sync="editDialogVisible" width="50%" >
+			    <el-form :model="editForm" :rules="editRules" ref="editFormRef" label-width="120px">
+			        <el-form-item label="所属标签" prop='labelId'>
+			            <el-select v-model="editForm.labelId" placeholder="请选择"   @change="handleEditChange">
+			              <el-option
+			                v-for="item in options"
+			                :key="item.id"
+			                :label="item.name"
+			                :value="item.id">
+			              </el-option>
+			            </el-select>
+			        </el-form-item>
+			        <el-form-item label="系列名称" prop="name">
+			            <el-input v-model="editForm.name"></el-input>
+			        </el-form-item>
+			         <el-form-item label="图片" >
+			        <el-upload
+			          ref="editUpload"
+			          action="/as"
+			          :limit ="1"
+			          list-type="picture-card"
+			          :http-request="handleEditUpload"
+			          :auto-upload="false"
+								:file-list="fileList"
+			          >
+			          <i class="el-icon-plus"></i>
+			        </el-upload>
+			        </el-form-item>
+			    </el-form>
+			    <span slot="footer" class="dialog-footer">
+			        <el-button @click="editDialogVisible = false">取 消</el-button>
+			        <el-button type="primary" @click="submitEdit">确 定</el-button>
+			    </span>
+			</el-dialog>
      </el-card>
   </div>
 </template>
@@ -78,21 +118,33 @@
       return {
         token: '',
         seriesList: [],
-       fileList: [],
+       fileList: [{url: ''}],
        labelId: '',
+			 editLabelId: '',
        options: '',
-        addDialogVisible: false, //控制对话框的显示隐藏
-        file: '',
-        addForm: {
-            name: '',
-            label: '',
-            file: ''
+			 editDialogVisible: false, 
+       addDialogVisible: false, //控制对话框的显示隐藏
+       file: '',
+       addForm: {
+				name: '',
+				label: '',
+				file: ''
+			},
+			addRules: {
+					label: [{required: true, message: '请选择所属标签', trigger: 'blur' }],
+					name: [{required: true, message: '请输入姓名', trigger: 'blur' }],
+					file: {required: true, message: '选择图片', trigger: 'blur'}
         },
-        addRules: {
-            label: [{required: true, message: '请选择所属标签', trigger: 'blur' }],
-            name: [{required: true, message: '请输入姓名', trigger: 'blur' }],
-            file: {required: true, message: '选择图片', trigger: 'blur'}
-        },
+				editForm: {
+					name: '',
+					labelId: '',
+					file: ''
+				},
+				editRules: {
+				    label: [{required: true, message: '请选择所属标签', trigger: 'blur' }],
+				    name: [{required: true, message: '请输入姓名', trigger: 'blur' }],
+				    file: {required: true, message: '选择图片', trigger: 'blur'}
+				},
         }
       },
       methods: {
@@ -100,9 +152,16 @@
           this.addForm.label = val;
           this.labelId  = val;
         },
+				handleEditChange(val) {
+					this.editForm.labelId = val;
+					
+				},
         handleUpload(raw){
           this.addForm.file = raw.file;
         },
+				handleEditUpload(raw) {
+					this.editForm.file = raw.file;
+				},
         //添加公司
         submitCoparation() {
          this.$refs.addFormRef.validate((valid) => {
@@ -116,7 +175,6 @@
            }else {
              return this.$message.error('请添加图片')
            }
-
            axios({
                method: 'post',
                url: '/lightspace/addSeries',
@@ -128,6 +186,34 @@
            .catch(this.handleAddErr.bind(this))
          })
         },
+				submitEdit() {
+					this.$refs.editFormRef.validate((valid) => {
+					  if(!valid) return;
+					  
+					  let param = new FormData();
+					  if(this.editForm.file) {
+							this.$refs.editUpload.submit();
+					  }
+						param.append('id',this.editLabelId);
+						param.append('name', this.editForm.name);
+						param.append('file', this.editForm.file);
+						param.append('labelId', this.editForm.labelId);
+					  axios({
+					      method: 'post',
+					      url: '/lightspace/saveSeries',
+					      data: param,
+					      headers: {
+					        'Content-Type': 'multipart/form-data'
+					      }
+					  }).then((res) => {
+							if(res.data.status == 200) {
+								this.editDialogVisible = false;
+								this.getSeriesList()
+							}
+						})
+					  .catch((err) => {console.log(err)})
+					})
+				},
         handleAddSucc(res) {
            // console.log(res);
           if(res.data.status === 10204) {
@@ -172,11 +258,27 @@
         handleCoListErr(err) {
           console.log(err)
         },
-        addTeacher() {
-
-        },
+        edit(id){ 
+				 this.editDialogVisible = true;
+				 let param = new URLSearchParams();
+				 this.editLabelId = id;
+				   param.append('id', id);
+				   axios({
+				       method: 'post',
+				       url: '/lightspace/editSeries',
+				       data: param
+				   }).then((res) => {
+						 console.log(res)
+						 if(res.data.status == 200) {
+							 this.editForm = res.data.data;
+							 this.fileList[0].url= res.data.data.introduce
+							 console.log(this.fileList)
+						 }
+					 })
+				   .catch((err) => {console.log(err)})
+				 },
         //根据id删除学校
-       async removeById(id) {
+        async removeById(id) {
           const confirmResult = await this.$confirm('此操作将永久删除该系列, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
