@@ -51,6 +51,12 @@
 				    <el-image style="min-height: 70;height: 70" :src="scope.row.picture" fit="contain"></el-image>
 				   </template>
 				</el-table-column>
+				<el-table-column label="定制片光度范围"  prop="customFile">
+				   <!-- 图片的显示 -->
+				   <template   slot-scope="scope">
+				    <el-image style="min-height: 70;height: 70" :src="scope.row.customFile" fit="contain"></el-image>
+				   </template>
+				</el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<el-button type="primary" size="middle" icon="el-icon-edit" @click="editById(scope.row.id)"></el-button>
@@ -142,6 +148,19 @@
 					　  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 				　		</el-upload>
 					</el-form-item>
+					<el-form-item label="定制片光度范围">
+							<el-upload
+								ref="custompload"
+					 　　  class="upload-demo"
+								action="/as"
+						　　 :limit= "1"
+								:http-request="handleCustomUpload"
+						　　:auto-upload="false"
+						　　list-type="picture">
+						　　<el-button size="small" type="primary">点击上传</el-button>
+						　  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+					　		</el-upload>
+						</el-form-item>
 				</el-form>
 				<span slot="footer" class="dialog-footer">
 					<el-button @click="addDialogVisible = false">取 消</el-button>
@@ -203,7 +222,21 @@
 						　　<el-button size="small" type="primary">点击上传</el-button>
 						　  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 					　		</el-upload>
-						</el-form-item>
+					</el-form-item>
+					<el-form-item label="定制片光度范围">
+							<el-upload
+								ref="customEeditUpload"
+					 　　  class="upload-demo"
+						　　 action="/as"
+						　　 :limit= "1"
+								:http-request="handleCumstomEditUpload"
+						　　:auto-upload="false"
+								:file-list = "customfileList"
+						　　list-type="picture">
+						　　<el-button size="small" type="primary">点击上传</el-button>
+						　  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+					　		</el-upload>
+					</el-form-item>
 					<el-form-item label="球镜">
 						<el-input v-model="editClassForm.sphericalMirror"></el-input>
 					</el-form-item>
@@ -265,6 +298,7 @@
 				addDialogVisible: false, //控制对话框的显示隐藏
 				file: '',
 				fileList: [{url: ''}],
+				customfileList: [{url: ''}],
 				page: 1,
 				seriesOptions: [],
 				addClassForm: {
@@ -273,6 +307,7 @@
 					refractive: '',
 					abbe: '',
 					film: '',
+					comtomFile: '',
 					covert: '',
 					addLightBelow: '',
 					presentPrice: '',
@@ -345,7 +380,9 @@
 					refractive: '',
 					abbe: '',
 					film: '',
+					editComtomFile: '',
 					file: '',
+					customFile: '',
 					covert: '',
 					addLightBelow: '',
 					presentPrice: '',
@@ -417,8 +454,14 @@
 			handleDetailUpload(raw) {
 			   this.addClassForm.file = raw.file;
 			},
+			handleCustomUpload(raw) {
+				this.addClassForm.customFile = raw.file;
+			},
 			handleEditUpload(raw) {
 				this.editClassForm.file = raw.file;
+			},
+			handleCumstomEditUpload(raw) {
+				this.editClassForm.customFile = raw.file;
 			},
 			handleLabelChange(val) {
 				this.getSearchSeriesProduct(val);
@@ -470,6 +513,7 @@
 				})
 			},
 			handleEditById(res) {
+				console.log(res.data.data, 'edit')
 				if (res.data.data) {
 					this.editClassForm = res.data.data;
 					this.editSeriesId = res.data.data.seriesId;
@@ -479,6 +523,7 @@
 					}else if(res.data.data.picture == 'https://www.guangliangkongjian.com/images/null') {
 						this.fileList[0].url = '';
 					}
+					this.customfileList[0].url = res.data.data.customFile;
 					this.getSeriousProduct(this.editClassForm.labelId);
 				}
 			},
@@ -490,6 +535,7 @@
 						return;
 					} else {
 						this.$refs.editUpload.submit();
+						this.$refs.customEeditUpload.submit();
 						let param = new FormData();
 						param.append('id', this.editId);
 						param.append('seriesId', this.editSeriesId);
@@ -498,6 +544,7 @@
 						param.append('refractive', this.editClassForm.refractive);
 						param.append('abbe', this.editClassForm.abbe);
 						param.append('file', this.editClassForm.file);
+						param.append('file1', this.editClassForm.customFile);
 						param.append('covert', this.editClassForm.covert);
 						param.append('addLightBelow', this.editClassForm.addLightBelow);
 						param.append('presentPrice', this.editClassForm.presentPrice);
@@ -580,7 +627,8 @@
 			//添加产品
 			submitCoparation() {
 				 this.$refs.upload.submit();
-				this.$refs.addClassFormRef.validate((valid) => {
+				 this.$refs.custompload.submit();
+				 this.$refs.addClassFormRef.validate((valid) => {
 					if (!valid) return;
 					if (!this.seriesId || !this.labelId) {
 						this.$message.error('请先添加系列和标签');
@@ -594,6 +642,7 @@
 						param.append('abbe', this.addClassForm.abbe);
 						param.append('film', this.addClassForm.film);
 						param.append('file', this.addClassForm.file);
+						param.append('file1', this.addClassForm.customFile);
 						param.append('covert', this.addClassForm.covert);
 						param.append('addLightBelow', this.addClassForm.addLightBelow);
 						param.append('presentPrice', this.addClassForm.presentPrice);
