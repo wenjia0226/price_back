@@ -115,7 +115,7 @@
              param.append('token', this.token);
              axios({
                  method: 'post',
-                 url: '/lightspace/addLabel',
+                 url: '/price/addLabel',
                  data: param
              }).then(this.handleAddLabelSucc.bind(this))
              .catch(this.handleAddLabelErr.bind(this))
@@ -150,7 +150,7 @@
         axios({
           method: 'post',
           data: param,
-           url: '/lightspace/labelList'
+           url: '/price/labelList'
         }).then(this.handleGetLabelListSucc.bind(this)).catch(this.handleGetLabelErr.bind(this))
       },
       handleGetLabelListSucc(res) {
@@ -168,7 +168,7 @@
          param.append('id', id);
          axios({
              method: 'post',
-             url: '/lightspace/editLabel',
+             url: '/price/editLabel',
              data: param
          }).then(this.handleEditLabelSucc.bind(this))
          .catch(this.handleEditLabelErr.bind(this))
@@ -199,7 +199,7 @@
          param.append('id', this.id);
          axios({
              method: 'post',
-             url: '/lightspace/saveLabel',
+             url: '/price/saveLabel',
              data: param
          }).then(this.handleEditSaveLabelSucc.bind(this))
          .catch(this.handleEditSaveLabelErr.bind(this))
@@ -235,7 +235,7 @@
          param.append('id', id);
          axios({
              method: 'post',
-             url: '/lightspace/deleteLabel',
+             url: '/price/deleteLabel',
              data: param
          }).then(this.handleDeleteLabelSucc.bind(this))
          .catch(this.handleDeleteLabelErr.bind(this))

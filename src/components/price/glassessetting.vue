@@ -131,7 +131,7 @@
           axios({
             method: 'post',
             data: param,
-            url: '/lightspace/findSeriesBylabel'
+            url: '/price/findSeriesBylabel'
           }).then((this.handleGetProductByLabelId.bind(this))).catch((err) => {
             console.log(err)
           })
@@ -160,7 +160,7 @@
 
            axios({
                method: 'post',
-               url: '/lightspace/addSeriesProduct',
+               url: '/price/addSeriesProduct',
                data: param,
                headers: {
                  'Content-Type': 'multipart/form-data'
@@ -201,7 +201,7 @@
           axios({
             method: 'post',
             data: param,
-             url: '/lightspace/seriesProductList'
+             url: '/price/seriesProductList'
           }).then(this.handleCoListSucc.bind(this)).catch(this.handleCoListErr.bind(this))
         },
         handleCoListSucc(res) {
@@ -231,7 +231,7 @@
           param.append('id', id)
           axios({
               method: 'post',
-              url: '/lightspace/deleteSeriesProduct',
+              url: '/price/deleteSeriesProduct',
               data: param
           }).then(this.handleDeleteSucc.bind(this))
           .catch(this.handleDeleteErr.bind(this))
@@ -254,7 +254,7 @@
             param.append('token', this.token);
             axios({
                 method: 'post',
-                url: '/lightspace/labelList',
+                url: '/price/labelList',
                 data: param
             }).then(this.handleGetOptionSucc.bind(this)).catch(this.handleGetOptionErr.bind(this))
         },

@@ -476,7 +476,7 @@
 				axios({
 					method: 'post',
 					data: param,
-					url: '/lightspace/findGlassesBySeries'
+					url: '/price/findGlassesBySeries'
 				}).then((res) => {
 					// console.log(res)
 					if (this.seriesId) {
@@ -507,13 +507,12 @@
 				axios({
 					method: 'post',
 					data: param,
-					url: '/lightspace/editGlasses'
+					url: '/price/editGlasses'
 				}).then((this.handleEditById.bind(this))).catch((err) => {
 					console.log(err)
 				})
 			},
 			handleEditById(res) {
-				console.log(res.data.data, 'edit')
 				if (res.data.data) {
 					this.editClassForm = res.data.data;
 					this.editSeriesId = res.data.data.seriesId;
@@ -559,7 +558,7 @@
 						param.append('bluray', this.editClassForm.bluray);
 						axios({
 								method: 'post',
-								url: '/lightspace/saveGlasses',
+								url: '/price/saveGlasses',
 								data: param
 							}).then(this.handleEditSucc.bind(this))
 							.catch(this.handleAddErr.bind(this))
@@ -597,7 +596,7 @@
 				axios({
 					method: 'post',
 					data: param,
-					url: '/lightspace/findSeriesBylabel'
+					url: '/price/findSeriesBylabel'
 				}).then((this.handleGetProByLabelId.bind(this))).catch((err) => {
 					console.log(err)
 				})
@@ -613,7 +612,7 @@
 				axios({
 					method: 'post',
 					data: param,
-					url: '/lightspace/findSeriesBylabel'
+					url: '/price/findSeriesBylabel'
 				}).then((this.handleGetProductByLabelId.bind(this))).catch((err) => {
 					console.log(err)
 				})
@@ -657,7 +656,7 @@
 						param.append('bluray', this.addClassForm.bluray);
 						axios({
 								method: 'post',
-								url: '/lightspace/addGlasses',
+								url: '/price/addGlasses',
 								data: param
 							}).then(this.handleAddSucc.bind(this))
 							.catch(this.handleAddErr.bind(this))
@@ -708,7 +707,7 @@
 				axios({
 					method: 'post',
 					data: param,
-					url: '/lightspace/findGlassesBySeries'
+					url: '/price/findGlassesBySeries'
 				}).then(this.handleCoListSucc.bind(this)).catch(this.handleCoListErr.bind(this))
 			},
 			handleCoListSucc(res) {
@@ -738,7 +737,7 @@
 				param.append('id', id)
 				axios({
 						method: 'post',
-						url: '/lightspace/deleteGlasses',
+						url: '/price/deleteGlasses',
 						data: param
 					}).then(this.handleDeleteSucc.bind(this))
 					.catch(this.handleDeleteErr.bind(this))
@@ -761,7 +760,7 @@
 				param.append('token', this.token);
 				axios({
 					method: 'post',
-					url: '/lightspace/labelList',
+					url: '/price/labelList',
 					data: param
 				}).then(this.handleGetOptionSucc.bind(this)).catch(this.handleGetOptionErr.bind(this))
 			},

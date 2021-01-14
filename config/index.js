@@ -10,7 +10,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 	proxyTable: {
-	 '/lightspace': {
+	 '/price': {
 	   //target: 'http://47.104.222.22:8080/',
 	   target: 'https://www.guangliangkongjian.com',
 		 //target: 'http://192.168.100.199:8080/',
@@ -48,7 +48,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'lightspace',
+    assetsSubDirectory: 'price',
     assetsPublicPath: '/',
 
     /**

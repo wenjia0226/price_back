@@ -57,7 +57,7 @@
 				axios({
 					method: 'post',
 					data: param,
-					url: '/lightspace/priceclient/changePassword'
+					url: '/price/priceclient/changePassword'
 				}).then(this.handleChangeWordSucc.bind(this)).catch((err) => {console.log(err)})
 				})	
 			},

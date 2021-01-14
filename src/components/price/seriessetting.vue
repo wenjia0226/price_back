@@ -19,9 +19,15 @@
         <el-table-column label="图片"  prop="imgurl" min-width="20%" >
          <!-- 图片的显示 -->
          <template   slot-scope="scope">
-          <el-image style="min-height: 70;height: 70; border-radius: 20px" :src="scope.row.introduce" fit="contain"></el-image>
+          <el-image style="min-height: 70;height: 70; " :src="scope.row.introduce" fit="contain"></el-image>
          </template>
       </el-table-column>
+			<el-table-column label="详情图片"  prop="imgurl" min-width="20%" >
+			   <!-- 图片的显示 -->
+			   <template   slot-scope="scope">
+			    <el-image style="min-height: 70;height: 70; " :src="scope.row.picture" fit="contain"></el-image>
+			   </template>
+			</el-table-column>
       <el-table-column label="备注" prop="details"></el-table-column>
 			<el-table-column label="操作">
 				<template slot-scope="scope">
@@ -50,8 +56,7 @@
               <el-form-item label="系列名称" prop="name">
                   <el-input v-model="addForm.name"></el-input>
               </el-form-item>
-
-               <el-form-item label="图片" >
+              <el-form-item label="图片" >
               <el-upload
                 ref="upload"
                 action="/as"
@@ -63,6 +68,18 @@
                 <i class="el-icon-plus"></i>
               </el-upload>
               </el-form-item>
+							<el-form-item label="系列详情图" >
+								<el-upload
+									ref="detailUpload"
+									action="/as"
+									:limit ="1"
+									list-type="picture-card"
+									:http-request="handleDetailUpload"
+									:auto-upload="false"
+									>
+									<i class="el-icon-plus"></i>
+								</el-upload>
+							</el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
               <el-button @click="addDialogVisible = false">取 消</el-button>
@@ -98,6 +115,19 @@
 			          <i class="el-icon-plus"></i>
 			        </el-upload>
 			        </el-form-item>
+							<el-form-item label="系列详情图">
+								<el-upload
+									ref="editDetailUpload"
+									action="/as"
+									:limit ="1"
+									list-type="picture-card"
+									:http-request="handleEditDetailUpload"
+									:auto-upload="false"
+									:file-list="detailFileList"
+									>
+									<i class="el-icon-plus"></i>
+								</el-upload>
+							</el-form-item>
 			    </el-form>
 			    <span slot="footer" class="dialog-footer">
 			        <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -119,6 +149,7 @@
         token: '',
         seriesList: [],
        fileList: [{url: ''}],
+			 detailFileList: [{url: ''}],
        labelId: '',
 			 editLabelId: '',
        options: '',
@@ -128,7 +159,8 @@
        addForm: {
 				name: '',
 				label: '',
-				file: ''
+				file: '',
+				detailFile: ''
 			},
 			addRules: {
 					label: [{required: true, message: '请选择所属标签', trigger: 'blur' }],
@@ -138,7 +170,8 @@
 				editForm: {
 					name: '',
 					labelId: '',
-					file: ''
+					file: '',
+					detailFile: ''
 				},
 				editRules: {
 				    label: [{required: true, message: '请选择所属标签', trigger: 'blur' }],
@@ -159,6 +192,12 @@
         handleUpload(raw){
           this.addForm.file = raw.file;
         },
+				handleDetailUpload(raw) {
+					this.addForm.detailFile = raw.file;
+				},
+				handleEditDetailUpload(raw) {
+					this.editForm.detailFile = raw.file;
+				},
 				handleEditUpload(raw) {
 					this.editForm.file = raw.file;
 				},
@@ -167,17 +206,19 @@
          this.$refs.addFormRef.validate((valid) => {
            if(!valid) return;
             this.$refs.upload.submit();
+						this.$refs.detailUpload.submit();
            let param = new FormData();
            if(this.addForm.file) {
              param.append('name', this.addForm.name);
              param.append('file', this.addForm.file);
+						 param.append('file1', this.addForm.detailFile);
              param.append('labelId', this.labelId);
            }else {
              return this.$message.error('请添加图片')
            }
            axios({
                method: 'post',
-               url: '/lightspace/addSeries',
+               url: '/price/addSeries',
                data: param,
                headers: {
                  'Content-Type': 'multipart/form-data'
@@ -189,18 +230,17 @@
 				submitEdit() {
 					this.$refs.editFormRef.validate((valid) => {
 					  if(!valid) return;
-					  
 					  let param = new FormData();
-					  if(this.editForm.file) {
-							this.$refs.editUpload.submit();
-					  }
+						this.$refs.editUpload.submit();
+						this.$refs.editDetailUpload.submit();
 						param.append('id',this.editLabelId);
 						param.append('name', this.editForm.name);
 						param.append('file', this.editForm.file);
+						param.append('file1', this.editForm.detailFile);
 						param.append('labelId', this.editForm.labelId);
 					  axios({
 					      method: 'post',
-					      url: '/lightspace/saveSeries',
+					      url: '/price/saveSeries',
 					      data: param,
 					      headers: {
 					        'Content-Type': 'multipart/form-data'
@@ -246,7 +286,7 @@
           axios({
             method: 'post',
             data: param,
-             url: '/lightspace/seriesList'
+             url: '/price/seriesList'
           }).then(this.handleCoListSucc.bind(this)).catch(this.handleCoListErr.bind(this))
         },
         handleCoListSucc(res) {
@@ -265,14 +305,13 @@
 				   param.append('id', id);
 				   axios({
 				       method: 'post',
-				       url: '/lightspace/editSeries',
+				       url: '/price/editSeries',
 				       data: param
 				   }).then((res) => {
-						 console.log(res)
 						 if(res.data.status == 200) {
 							 this.editForm = res.data.data;
 							 this.fileList[0].url= res.data.data.introduce
-							 console.log(this.fileList)
+							 this.detailFileList[0].url = res.data.data.picture
 						 }
 					 })
 				   .catch((err) => {console.log(err)})
@@ -291,7 +330,7 @@
           param.append('id', id)
           axios({
               method: 'post',
-              url: '/lightspace/deleteSeries',
+              url: '/price/deleteSeries',
               data: param
           }).then(this.handleDeleteSucc.bind(this))
           .catch(this.handleDeleteErr.bind(this))
@@ -313,7 +352,7 @@
             let param = new URLSearchParams();
             axios({
                 method: 'post',
-                url: '/lightspace/labelList',
+                url: '/price/labelList',
                 data: param
             }).then(this.handleGetOptionSucc.bind(this)).catch(this.handleGetOptionErr.bind(this))
         },
